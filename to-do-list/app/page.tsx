@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from "react";
 
 const status: Array<string> = ['To do', 'In progress', 'Done']
@@ -15,8 +17,18 @@ export default function Home() {
 const Table = () => {
     return (
         <table>
-            <thead></thead>
-            <tbody></tbody>
+            <thead>
+                <th>Name</th>
+                <th>Status</th>
+                <th>User</th>
+            </thead>
+            <tbody>
+                <Row 
+                name='Tirer la chasse'
+                status={status[1]} 
+                user={users[0]}
+                />
+            </tbody>
         </table>
     )
 }
@@ -31,7 +43,7 @@ interface RowArg {
 const Row = (props: RowArg) => {
     return (
         <tr>
-            <th>{props.name}</th>
+            <td>{props.name}</td>
             <td><Select array={status} value={props.status}/></td>
             <td><Select array={users} value={props.user}/></td>
         </tr>
