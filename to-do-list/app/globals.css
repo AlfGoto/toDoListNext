@@ -1,14 +1,60 @@
-:root{}
+:root {}
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: sans-serif;
 }
 
-body{
-    section{
-        color: red;
+body {
+    section {
+        /* color: red; */
+    }
+}
+
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(140 140 140);
+
+    width: 100svw;
+
+    th,
+    td {
+        border: 1px solid rgb(160 160 160);
+        padding: 8px 10px;
+
+        &:has(select){
+            padding: 0px;
+        }
+        &:has(input){
+            padding: 0px;
+        }
+    }
+
+    thead {
+        td {
+            text-decoration: underline black solid 1px;
+        }
+    }
+
+    select{
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        border: none;
+        padding: 8px;
+    }
+    input{
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        
+        border: none;
+    }
+
+    #addRow{
+        color: gray;
     }
 }
