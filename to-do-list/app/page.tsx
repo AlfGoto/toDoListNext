@@ -35,10 +35,12 @@ const Table = () => {
             <tbody>
                 {rows.map((e, key) =>
                     <Row
-                        key={key}
-                        name={e.name}
-                        status={e.status}
-                        user={e.user}
+                        // key={key}
+                        // name={e.name}
+                        // status={e.status}
+                        row={e}
+                        setRows={setRows}
+                        rows={rows}
                     />
                 )}
 
@@ -57,6 +59,7 @@ const AddRowRow = (props: AddRowRowArg) => {
     const [add, setAdd] = useState({ status: status[0], user: users[0], name: '' })
 
     function submit() {
+        if(add.name == '')return
         props.setRows([...props.rows, add])
         setAdd({ status: status[0], user: users[0], name: '' })
     }
@@ -75,8 +78,8 @@ const AddRowRow = (props: AddRowRowArg) => {
                     value={add.status}
                     onChange={(e) => { setAdd({ ...add, status: e.target.value }) }}
                 >
-                    {status.map(e =>
-                        <option value={e}>{e}</option>
+                    {status.map((e,key) =>
+                        <option key={key} value={e}>{e}</option>
                     )}
                 </select>
             </td>
@@ -86,8 +89,8 @@ const AddRowRow = (props: AddRowRowArg) => {
                     value={add.user}
                     onChange={(e) => { setAdd({ ...add, user: e.target.value }) }}
                 >
-                    {users.map(e =>
-                        <option value={e}>{e}</option>
+                    {users.map((e,key) =>
+                        <option key={key} value={e}>{e}</option>
                     )}
                 </select>
             </td>
@@ -101,21 +104,21 @@ const AddRowRow = (props: AddRowRowArg) => {
 
 
 interface RowArg {
-    status: string,
-    user: string,
-    name: string,
-    key: number
+    row: RowsInterface,
+    setRows: React.Dispatch<React.SetStateAction<RowsInterface[]>>,
+    rows: Array<RowsInterface>
 }
 const Row = (props: RowArg) => {
     const del = () => {
-        console.log('delete ' + props.name)
+        const updatedRows = props.rows.filter(r => r !== props.row);
+        props.setRows(updatedRows);
     }
     return (
-        <tr key={props.key}>
-            <td>{props.name}</td>
-            <td><Select array={status} value={props.status} /></td>
-            <td><Select array={users} value={props.user} /></td>
-            <td onClick={del}>Delete</td>
+        <tr key={props.rows.indexOf(props.row)}>
+            <td>{props.row.name}</td>
+            <td><Select array={status} value={props.row.status} /></td>
+            <td><Select array={users} value={props.row.user} /></td>
+            <td><button onClick={del}>Delete</button></td>
         </tr>
     )
 }
@@ -133,8 +136,8 @@ const Select = (props: SelectArg) => {
             value={val}
             onChange={(e) => { setVal(e.target.value) }}
         >
-            {props.array.map(e =>
-                <option value={e}>{e}</option>
+            {props.array.map((e,key) =>
+                <option key={key} value={e}>{e}</option>
             )}
         </select>
     )
