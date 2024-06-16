@@ -35,7 +35,7 @@ const Table = () => {
             <tbody>
                 {rows.map((e, key) =>
                     <Row
-                        // key={key}
+                        key={key}
                         // name={e.name}
                         // status={e.status}
                         row={e}
