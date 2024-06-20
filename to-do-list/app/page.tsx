@@ -14,6 +14,34 @@ export default function Home() {
     );
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 interface RowsInterface {
     name: string,
     status: string,
@@ -59,7 +87,7 @@ const AddRowRow = (props: AddRowRowArg) => {
     const [add, setAdd] = useState({ status: status[0], user: users[0], name: '' })
 
     function submit() {
-        if(add.name == '')return
+        if (add.name == '') return
         props.setRows([...props.rows, add])
         setAdd({ status: status[0], user: users[0], name: '' })
     }
@@ -78,7 +106,7 @@ const AddRowRow = (props: AddRowRowArg) => {
                     value={add.status}
                     onChange={(e) => { setAdd({ ...add, status: e.target.value }) }}
                 >
-                    {status.map((e,key) =>
+                    {status.map((e, key) =>
                         <option key={key} value={e}>{e}</option>
                     )}
                 </select>
@@ -89,7 +117,7 @@ const AddRowRow = (props: AddRowRowArg) => {
                     value={add.user}
                     onChange={(e) => { setAdd({ ...add, user: e.target.value }) }}
                 >
-                    {users.map((e,key) =>
+                    {users.map((e, key) =>
                         <option key={key} value={e}>{e}</option>
                     )}
                 </select>
@@ -109,16 +137,36 @@ interface RowArg {
     rows: Array<RowsInterface>
 }
 const Row = (props: RowArg) => {
+    const [name, setName] = useState(props.row.name)
     const del = () => {
         const updatedRows = props.rows.filter(r => r !== props.row);
         props.setRows(updatedRows);
     }
     return (
         <tr key={props.rows.indexOf(props.row)}>
-            <td>{props.row.name}</td>
-            <td><Select array={status} value={props.row.status} /></td>
-            <td><Select array={users} value={props.row.user} /></td>
-            <td><button onClick={del}>Delete</button></td>
+            <td>
+                <input
+                    type="text"
+                    value={name}
+                    onChange={e => { setName(e.target.value) }}
+                />
+            </td>
+            <td>
+                <Select
+                    array={status}
+                    value={props.row.status} />
+            </td>
+            <td>
+                <Select
+                    array={users}
+                    value={props.row.user} />
+            </td>
+            <td>
+                <button
+                    onClick={del}>
+                    Delete
+                </button>
+            </td>
         </tr>
     )
 }
@@ -136,7 +184,7 @@ const Select = (props: SelectArg) => {
             value={val}
             onChange={(e) => { setVal(e.target.value) }}
         >
-            {props.array.map((e,key) =>
+            {props.array.map((e, key) =>
                 <option key={key} value={e}>{e}</option>
             )}
         </select>
