@@ -5,6 +5,13 @@
     font-family: sans-serif;
 }
 
+body{
+    width: 100svw;
+    /* overflow: hidden; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 table {
     border-collapse: collapse;
@@ -70,5 +77,27 @@ table {
 
     #addRow {
         color: gray;
+    }
+}
+
+body:has(#LoginDIV){
+    height: 100svh;
+}
+#LoginDIV{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    
+    p{
+        color: red;
+    }
+
+    input{
+        border: 1px solid gray;
+        padding: 10px;
+    }
+    button{
+        padding: 10px;
+        border: none;
     }
 }
