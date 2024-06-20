@@ -27,27 +27,15 @@ table {
 
         &:has(select) {
             padding: 0px;
+            width: 150px;
         }
         &:has(input) {
             padding: 0px;
         }
+        &:has(button){
+            width: 150px;
+        }
 
-    }
-
-    tr {
-        &:nth-child(1) {
-            flex: 5;
-        }
-        &:nth-child(2) {
-            flex: 1;
-        }
-        &:nth-child(3) {
-            flex: 1;
-        }
-        &:nth-child(4) {
-            flex: 1;
-
-        }
     }
 
     thead {

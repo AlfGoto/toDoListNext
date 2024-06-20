@@ -19,7 +19,7 @@ export default function Log() {
             let data = { username: username, password: password }
             let result: string | boolean = await login(data)
             if(result === true){
-                localStorage.setItem("user", username);
+                window.localStorage.setItem("user", username);
                 router.push('/')
             }else{
                 setErrorMsg(result)
