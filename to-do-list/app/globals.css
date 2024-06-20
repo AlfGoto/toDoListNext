@@ -118,3 +118,15 @@ body:has(#LoginDIV){
         
     }
 }
+
+
+#interface{
+    width: 100svw;
+    display: flex;
+
+    select{
+        background-color: transparent;
+        border: 1px solid gray;
+        padding: 10px;
+    }
+}

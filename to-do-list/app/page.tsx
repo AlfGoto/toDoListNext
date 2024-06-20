@@ -20,7 +20,7 @@ export default function Home() {
 
     return (
         <>
-            <section>
+            <section id='interface'>
                 <h1>Table</h1>
                 <Select
                     array={['Table', 'Cards']}
