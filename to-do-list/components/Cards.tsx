@@ -2,7 +2,7 @@
 
 import status from "../vars/status"
 
-interface CardsArg{
+interface CardsArg {
     users: Array<string>,
     rows: Array<RowsInterface>,
     setRows: Function,
@@ -12,26 +12,42 @@ interface RowsInterface {
     status: string,
     user: string,
 }
-interface sInterface{
+interface sInterface {
     [key: string]: Array<string>
 }
-export default function Cards(props : CardsArg){
+export default function Cards(props: CardsArg) {
 
     let s: sInterface = {}
-    status.forEach(j=>{
+    status.forEach(j => {
         s[j] = []
-        props.rows.forEach((e: RowsInterface)=>{
-            if(e.status == j){s[j].push(e.name)}
+        props.rows.forEach((e: RowsInterface) => {
+            if (e.status == j) { s[j].push(e.name) }
         })
     })
-    console.log(s)
 
+    return <section id='Cards'>
+        {Object.entries(s).map((e, key) =>
+            <Status key={key} name={e[0]} array={e[1]} />
+        )}
+    </section>
 
+}
 
-
-    return(
-        <section>
-            
-        </section>
+interface statusArg {
+    name: string,
+    array: Array<string>
+}
+function Status(props: statusArg) {
+    return (<>
+        <div className='status'>
+            <h2>{props.name}</h2>
+            <div className='row'>
+                {props.array.map((e, key) => <p key={key}>{e}</p>)}
+            </div>
+        </div>
+    </>
     )
 }
+
+
+
