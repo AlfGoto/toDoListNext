@@ -48,7 +48,6 @@ export async function login(arg: LogArg) {
         return str
     }
 
-
 }
 
 export async function register(arg: LogArg) {

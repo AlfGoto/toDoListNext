@@ -1,11 +1,15 @@
 'use client'
 
 import { useState } from "react";
+import { useRouter } from 'next/navigation'
 
 const status: Array<string> = ['To do', 'In progress', 'Done']
 const users: Array<string> = ['Alfred', 'Romain', 'Arnaud', 'Marco']
 
 export default function Home() {
+    const router = useRouter()
+    if(localStorage.getItem("user") == null){router.push('/log')}
+
     return (
         <section>
             <h1>Table</h1>
