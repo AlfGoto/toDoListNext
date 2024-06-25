@@ -149,6 +149,11 @@ body:has(#Lists){
         padding: 10px;
         border: 1px solid gray;
         background-color: transparent;
+
+        &:hover{
+            border-color: black;
+            background-color: rgba(229, 229, 229, 0.355);
+        }
     }
     div{
         display: flex;

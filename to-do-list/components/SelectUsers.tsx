@@ -1,13 +1,19 @@
+'use client'
+
 import { useState } from "react"
-import { updateStatusWithId } from './actions'
+import { updateUserWithId } from './actions'
 
 interface SelectArg {
-    array: Array<string>,
+    array: Array<User>,
     value: string,
     onChange?: Function,
     id?: number
 }
-const Select = (props: SelectArg) => {
+interface User {
+    name: string,
+    id: number
+}
+const SelectUsers = (props: SelectArg) => {
     const [val, setVal] = useState(props.value)
 
     return (
@@ -17,14 +23,14 @@ const Select = (props: SelectArg) => {
                 (e) => {
                     props.onChange != undefined && props.onChange(e.target.value)
                     setVal(e.target.value)
-                    if (props.id)updateStatusWithId(props.id, e.target.value)
+                    if (props.id)updateUserWithId(props.id, Number(e.target.value))
                 }}
         >
-            {props.array.map((e, key) =>
-                <option key={key} value={e}>{e}</option>
+            {props.array.map((e: User, key: number) =>
+                <option key={key} value={e.id}>{e.name}</option>
             )}
         </select>
     )
 }
 
-export default Select
+export default SelectUsers

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
 import List from "../components/List"
 import Select from '../components/Select'
+import ArrowLeft from '../components/ArrowLeft'
 import { getListOfListsWithIdUser, createListWithName } from './actions'
 
 
@@ -19,9 +20,10 @@ export default function Home() {
     const [selectedList, setSelectedList] = useState<ListInterface>()
     const [newListName, setNewListName] = useState<string>('')
 
-    const idUser = localStorage.getItem("user") 
+    let idUser: string | null = null
 
     useEffect(() => {
+        idUser = localStorage.getItem("user")
         if (idUser == null) { router.push('/log') }
         else getList(Number(idUser))
     }, [])
@@ -36,17 +38,15 @@ export default function Home() {
         if (Lists) { setLists(tmp) }
     }
 
-    async function SelectList(e: ListInterface) {
-        console.log(e)
-        setSelectedList(e)
-    }
+
     async function CreateList(e: any) {
         e.preventDefault()
-        if(newListName == '')return
+        if (newListName == '') return
         let newList: ListInterface = await createListWithName(newListName, Number(idUser))
         setLists([...lists, newList])
         setNewListName('')
     }
+
 
     if (!selectedList) {
         return <section id='Lists'>
@@ -54,7 +54,7 @@ export default function Home() {
             <div>
                 {lists.map(
                     (e: ListInterface, key: number) =>
-                        <button key={key} onClick={() => { SelectList(e) }}>{e.name}</button>
+                        <button key={key} onClick={() => { setSelectedList(e) }}>{e.name}</button>
                 )}
             </div>
             <details>
@@ -86,7 +86,7 @@ export default function Home() {
     return (
         <>
             <section id='interface'>
-            <ArrowLeft func={()=>{setSelectedList(undefined)}}/>
+                <ArrowLeft func={() => { setSelectedList(undefined) }} />
                 <Select
                     array={['Table', 'Cards']}
                     value={format}
@@ -94,15 +94,11 @@ export default function Home() {
                 />
                 <h3>{selectedList.name}</h3>
             </section>
-            <List format={format} list={selectedList}/>
+            <List format={format} list={selectedList} />
         </>
     );
 }
 
 
-interface Arrow{
-    func: Function
-}
-const ArrowLeft = (props: Arrow)=>{
-    return <div onClick={()=>{props.func()}}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path onClick={()=>{props.func()}} d="M15.28 5.22a.75.75 0 0 1 0 1.06L9.56 12l5.72 5.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-6.25-6.25a.75.75 0 0 1 0-1.06l6.25-6.25a.75.75 0 0 1 1.06 0Z"></path></svg></div>
-}
+
+

@@ -1,18 +1,25 @@
 import { useState } from "react"
 import status from "../vars/status"
+import { createRow, deleteRowWithId, updateNameWithId } from './actions'
 import Select from './Select'
+import SelectUsers from "./SelectUsers"
 
 
 interface TableArg {
-    users: Array<string>,
+    users: Array<User>,
     rows: Array<RowsInterface>,
     // setRows: React.Dispatch<React.SetStateAction<RowsInterface[]>>,
     setRows: Function,
+    id: number,
 }
 interface RowsInterface {
     name: string,
     status: string,
     user: string,
+    id?: number
+}
+interface User {
+    name: string,
     id: number
 }
 const Table = (props: TableArg) => {
@@ -39,7 +46,7 @@ const Table = (props: TableArg) => {
                     />
                 )}
 
-                <AddRowRow setRows={(e: any) => { props.setRows(e) }} rows={props.rows} users={props.users} />
+                <AddRowRow setRows={(e: any) => { props.setRows(e) }} rows={props.rows} users={props.users} idList={props.id} />
 
             </tbody>
         </table>
@@ -49,15 +56,17 @@ const Table = (props: TableArg) => {
 interface AddRowRowArg {
     setRows: Function,
     rows: Array<Object>,
-    users: Array<string>
+    users: Array<User>,
+    idList: number
 }
 const AddRowRow = (props: AddRowRowArg) => {
-    const [add, setAdd] = useState({ status: status[0], user: props.users[0], name: '' })
+    const [add, setAdd] = useState({ status: status[0], user: '', name: '' })
 
     function submit() {
         if (add.name == '') return
         props.setRows([...props.rows, add])
-        setAdd({ status: status[0], user: props.users[0], name: '' })
+        createRow(props.idList, add)
+        setAdd({ status: status[0], user: '', name: '' })
     }
     return (
         <tr id='addRow'>
@@ -68,7 +77,6 @@ const AddRowRow = (props: AddRowRowArg) => {
                     onChange={(e) => { setAdd({ ...add, name: e.target.value }) }}
                 />
             </td>
-
             <td>
                 <select
                     value={add.status}
@@ -79,18 +87,17 @@ const AddRowRow = (props: AddRowRowArg) => {
                     )}
                 </select>
             </td>
-
             <td>
                 <select
                     value={add.user}
                     onChange={(e) => { setAdd({ ...add, user: e.target.value }) }}
                 >
+                    <option value=""></option>
                     {props.users.map((e, key) =>
-                        <option key={key} value={e}>{e}</option>
+                        <option key={key} value={e.id}>{e.name}</option>
                     )}
                 </select>
             </td>
-
             <td>
                 <button onClick={submit}>Add !</button>
             </td>
@@ -103,13 +110,14 @@ interface RowArg {
     row: RowsInterface,
     setRows: React.Dispatch<React.SetStateAction<RowsInterface[]>>,
     rows: Array<RowsInterface>,
-    users: Array<string>
+    users: Array<User>
 }
 const Row = (props: RowArg) => {
     const [name, setName] = useState(props.row.name)
     const del = () => {
         const updatedRows = props.rows.filter(r => r !== props.row);
         props.setRows(updatedRows);
+        if (props.row.id) deleteRowWithId(props.row.id)
     }
     return (
         <tr key={props.rows.indexOf(props.row)}>
@@ -125,11 +133,13 @@ const Row = (props: RowArg) => {
                         old[index] = newRow
                         props.setRows(old)
                         setName(e.target.value)
+                        if(props.row.id)updateNameWithId(props.row.id, e.target.value)
                     }}
                 />
             </td>
             <td>
                 <Select
+                    id={props.row.id}
                     array={status}
                     value={props.row.status}
                     onChange={(e: string) => {
@@ -143,7 +153,8 @@ const Row = (props: RowArg) => {
                 />
             </td>
             <td>
-                <Select
+                <SelectUsers
+                    id={props.row.id}
                     array={props.users}
                     value={props.row.user}
                     onChange={(e: string) => {
@@ -166,6 +177,7 @@ const Row = (props: RowArg) => {
         </tr>
     )
 }
+
 
 
 

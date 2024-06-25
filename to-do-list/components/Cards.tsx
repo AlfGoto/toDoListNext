@@ -6,12 +6,13 @@ interface CardsArg {
     users: Array<string>,
     rows: Array<RowsInterface>,
     setRows: Function,
+    id: number
 }
 interface RowsInterface {
     name: string,
     status: string,
     user: string,
-    id: number
+    id?: number
 }
 interface sInterface {
     [key: string]: Array<string>
@@ -31,7 +32,6 @@ export default function Cards(props: CardsArg) {
             <Status key={key} name={e[0]} array={e[1]} />
         )}
     </section>
-
 }
 
 interface statusArg {
