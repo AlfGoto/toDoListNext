@@ -4,7 +4,13 @@ import Cards from './Cards'
 
 
 interface ListArg{
-    format: string
+    format: string,
+    list: List,
+}
+interface List {
+    id: number,
+    created_at: string,
+    name: string
 }
 interface RowsInterface {
     name: string,
