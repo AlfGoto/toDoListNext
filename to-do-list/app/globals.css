@@ -130,3 +130,40 @@ body:has(#LoginDIV){
         padding: 10px;
     }
 }
+
+body:has(#Lists){
+    /* justify-content: center; */
+    height: 100svh;
+
+}
+#Lists{
+    height: 50%;
+    /* width: 400px; */
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    button,
+    input{
+        padding: 10px;
+        border: 1px solid gray;
+        background-color: transparent;
+    }
+    div{
+        display: flex;
+        gap: 5px;
+    }
+    details{
+        display: flex;
+        gap: 10px;
+        border: solid lightgray 1px;
+
+        &[open]>summary{
+            border-bottom: 1px solid lightgray;
+        }
+        &>*{
+            padding: 10px;
+        }
+    }
+}

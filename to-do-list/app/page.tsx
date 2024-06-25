@@ -39,8 +39,9 @@ export default function Home() {
     async function SelectList(e: List) {
         console.log(e)
     }
-    async function CreateList(e:any) {
+    async function CreateList(e: any) {
         e.preventDefault()
+        if(newListName == '')return
         let newList: List = await createListWithName(newListName, Number(idUser))
         setLists([...lists, newList])
         setNewListName('')
@@ -48,13 +49,16 @@ export default function Home() {
 
     if (!selectedList) {
         return <section id='Lists'>
-            {lists.map(
-                (e: List, key: number) =>
-                    <button key={key} onClick={() => { SelectList(e) }}>{e.name}</button>
-            )}
+            <h1>Select a list !</h1>
+            <div>
+                {lists.map(
+                    (e: List, key: number) =>
+                        <button key={key} onClick={() => { SelectList(e) }}>{e.name}</button>
+                )}
+            </div>
             <details>
                 <summary>Create New List</summary>
-                <form onSubmit={e=>CreateList(e)}>
+                <form onSubmit={e => CreateList(e)}>
                     <input type="text" value={newListName} onChange={e => setNewListName(e.target.value)} />
                     <input type="submit" value='Create' />
                 </form>
