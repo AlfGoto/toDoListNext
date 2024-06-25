@@ -97,8 +97,8 @@ body:has(#LoginDIV){
     align-items: center;
     justify-content: space-evenly;
     width: 100svw;
-    height: 85svh;
-    padding: 10px;
+    height: 90svh;
+    /* padding: 10px; */
 
     .status{
         display: flex;
@@ -107,12 +107,12 @@ body:has(#LoginDIV){
         border: gray 1px solid;
         padding: 10px;
         height: 90%;
-        width: 30svw;
+        flex: 1;
         gap: 20px;
 
         .row:has(p){
             border: 1px solid gray;
-            width: 90%;
+            width: 100%;
             padding: 10px;
         }
         

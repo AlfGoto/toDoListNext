@@ -11,6 +11,7 @@ interface RowsInterface {
     name: string,
     status: string,
     user: string,
+    id: number
 }
 interface sInterface {
     [key: string]: Array<string>

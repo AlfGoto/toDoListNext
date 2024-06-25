@@ -38,14 +38,12 @@ export async function login(arg: LogArg) {
         .eq('password', arg.password)
 
 
-    if (Users.length == 1) {
-        console.log(true)
-        return true
-
-    }else{
+    if (Users != null && Users.length == 1) {
+        return { state: true, data: Users[0].id }
+    } else {
         let str: string = 'Your credentials does not match our system'
         console.log(str)
-        return str
+        return { state: false, data: str }
     }
 
 }
@@ -61,7 +59,7 @@ export async function register(arg: LogArg) {
         .eq('username', arg.username)
 
 
-    if (Users.length == 0) {
+    if (Users != null && Users.length == 0) {
 
         const { data, error } = await supabase
             .from('Users')
@@ -70,12 +68,16 @@ export async function register(arg: LogArg) {
             ])
             .select()
 
-            return  true
+        console.log(data)
+        if (data != null) {
+            return { state: true, data: data[0].id }
+        }
 
-    }else{
+
+    } else {
         console.log('already a user')
         let str: string = 'Username already taken'
-        return str
+        return { state: false, data: str }
     }
 
 }

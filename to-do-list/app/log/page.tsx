@@ -4,6 +4,13 @@ import { useState } from 'react'
 import { login, register } from './actions'
 import { useRouter } from 'next/navigation'
 
+interface Result{
+    state: boolean,
+    data: any
+}
+
+
+
 export default function Log() {
     const router = useRouter()
     const [username, setUsername] = useState('')
@@ -17,12 +24,12 @@ export default function Log() {
             setErrorMsg('You need a password and an username')
         }else{
             let data = { username: username, password: password }
-            let result: string | boolean = await login(data)
-            if(result === true){
-                window.localStorage.setItem("user", username);
+            let result: Result = await login(data)
+            if(result.state === true){
+                window.localStorage.setItem("user", result.data);
                 router.push('/')
             }else{
-                setErrorMsg(result)
+                setErrorMsg(result.data)
             }
         }
     }
@@ -33,12 +40,12 @@ export default function Log() {
             setErrorMsg('You need a password and an username')
         }else{
             let data = { username: username, password: password }
-            let result: string | boolean = await register(data)
-            if(result === true){
-                localStorage.setItem("user", username);
+            let result: any = await register(data)
+            if(result.state === true){
+                localStorage.setItem("user", result.data);
                 router.push('/')
             }else{
-                setErrorMsg(result)
+                setErrorMsg(result.data)
             }
         }
     }

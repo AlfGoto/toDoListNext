@@ -13,6 +13,7 @@ interface RowsInterface {
     name: string,
     status: string,
     user: string,
+    id: number
 }
 const Table = (props: TableArg) => {
     // const [rows, setRows] = useState<Array<RowsInterface>>([])

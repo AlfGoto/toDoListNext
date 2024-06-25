@@ -10,6 +10,7 @@ interface RowsInterface {
     name: string,
     status: string,
     user: string,
+    id: number
 }
 function List(props: ListArg){
     const users: Array<string> = ['Alfred', 'Romain', 'Arnaud', 'Marco']
