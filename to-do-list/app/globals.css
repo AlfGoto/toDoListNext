@@ -27,13 +27,13 @@ table {
 
         &:has(select) {
             padding: 0px;
-            width: 150px;
+            width: 15svw;
         }
         &:has(input) {
             padding: 0px;
         }
         &:has(button){
-            width: 150px;
+            width: 10svw;
         }
 
     }
