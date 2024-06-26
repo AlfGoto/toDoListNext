@@ -31,10 +31,7 @@ export default function Home() {
     async function getList(id: number) {
         let Lists = await getListOfListsWithIdUser(Number(id))
         let tmp: Array<ListInterface> = []
-        Lists?.forEach(e => {
-            // console.log(e)
-            tmp.push(e)
-        });
+        Lists?.forEach(e => {tmp.push(e)});
         if (Lists) { setLists(tmp) }
     }
 
@@ -78,10 +75,10 @@ export default function Home() {
 
 
 
-
-
-
-    function FormatChange(e: any) { setFormat(e) }
+    function disconnect(){
+        localStorage.removeItem("user")
+        router.push('/log')
+    }
 
     return (
         <>
@@ -90,9 +87,11 @@ export default function Home() {
                 <Select
                     array={['Table', 'Cards']}
                     value={format}
-                    onChange={FormatChange}
+                    onChange={(e:any)=>setFormat(e)}
                 />
                 <h3>{selectedList.name}</h3>
+
+                <button onClick={disconnect}>Disconnect</button>
             </section>
             <List format={format} list={selectedList} />
         </>

@@ -17,8 +17,6 @@ const supabase = createServerClient(
 )
 
 export async function createRow(idList: number, add: RowsInterface) {
-
-
     const { data, error } = await supabase
         .from('Rows')
         .insert([
@@ -27,7 +25,6 @@ export async function createRow(idList: number, add: RowsInterface) {
         .select()
     if (error) console.log(error)
     return data
-
 }
 
 interface Result {
@@ -39,21 +36,15 @@ export async function getUsersOfList(id: number) {
         .from('List_Users')
         .select("*")
         .eq('id_list', id)
-
-
     let ids: Array<number> = []
     List_Users?.forEach(e => {
         ids.push(Number(e.id_user))
     })
-
-
     let { data: Users, error } = await supabase
         .from('Users')
         .select("*")
         .in('id', ids)
-
     if (error) console.log(error)
-
     let result: Array<Result> = []
     Users?.forEach(e => {
         result.push({ name: e.username, id: e.id })
@@ -74,10 +65,7 @@ export async function getRowsByListId(id: number) {
         .from('Rows')
         .select("*")
         .eq('id_list', id)
-
-
     if (error) console.log(error)
-    console.log(Rows)
     let result: Array<RowsInterface> = []
     Rows?.forEach(e => { result.push({ name: e.name, status: e.status, user: e.id_user, id: e.id }) })
     return result
