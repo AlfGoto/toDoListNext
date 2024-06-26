@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import List from "../components/List"
 import Select from '../components/Select'
 import ArrowLeft from '../components/ArrowLeft'
-import { getListOfListsWithIdUser, createListWithName } from './actions'
+import { getListOfListsWithIdUser, createListWithName, getUserWithId, addUserToList, removeUserToList } from './actions'
 
 
 interface ListInterface {
@@ -13,26 +13,39 @@ interface ListInterface {
     created_at: string,
     name: string
 }
+interface User {
+    username: string,
+    tag: string
+}
 export default function Home() {
     const router = useRouter()
     const [format, setFormat] = useState('Table')
     const [lists, setLists] = useState<Array<ListInterface>>([])
     const [selectedList, setSelectedList] = useState<ListInterface>()
     const [newListName, setNewListName] = useState<string>('')
+    const [user, setUser] = useState<User>()
+    const [newUser, setNewUser] = useState<string>('')
 
     let idUser: string | null = null
 
     useEffect(() => {
         idUser = localStorage.getItem("user")
         if (idUser == null) { router.push('/log') }
-        else getList(Number(idUser))
+        else {
+            getList(Number(idUser))
+            getUser(Number(idUser))
+        }
     }, [])
 
     async function getList(id: number) {
         let Lists = await getListOfListsWithIdUser(Number(id))
         let tmp: Array<ListInterface> = []
-        Lists?.forEach(e => {tmp.push(e)});
+        Lists?.forEach(e => { tmp.push(e) });
         if (Lists) { setLists(tmp) }
+    }
+    async function getUser(id: number) {
+        let u = await getUserWithId(id)
+        if (u) setUser(u)
     }
 
 
@@ -75,9 +88,26 @@ export default function Home() {
 
 
 
-    function disconnect(){
+    function disconnect() {
         localStorage.removeItem("user")
         router.push('/log')
+    }
+    function addUser() {
+        if(user && selectedList){
+            addUserToList(newUser, selectedList.id)
+            setNewUser('')
+        }
+    }
+    async function removeUser(){
+        if(user && selectedList){
+            let s = await removeUserToList(user.tag, selectedList.id)
+            if(s){
+                setSelectedList(undefined)
+                window.location.reload()
+            }
+            // getList(Number(idUser))
+            // window.location.reload();
+        }
     }
 
     return (
@@ -87,10 +117,16 @@ export default function Home() {
                 <Select
                     array={['Table', 'Cards']}
                     value={format}
-                    onChange={(e:any)=>setFormat(e)}
+                    onChange={(e: any) => setFormat(e)}
                 />
+
                 <h3>{selectedList.name}</h3>
 
+                <input type="text" value={newUser} onChange={(e: any) => { setNewUser(e.target.value) }} />
+                <button onClick={addUser}>Add</button>  
+
+                {user && <p onClick={() => { navigator.clipboard.writeText(user?.username + user?.tag) }}>{user?.username + user?.tag}</p>}
+                <button onClick={removeUser}>Leave List</button>
                 <button onClick={disconnect}>Disconnect</button>
             </section>
             <List format={format} list={selectedList} />
