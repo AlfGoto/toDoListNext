@@ -48,7 +48,16 @@ export async function getUserWithId(id: number) {
 }
 export async function addUserToList(tag: string, idList: number) {
     let id: number = Number(tag.split('#')[1])
+    let username: string = tag.split('#')[0]
     if (id < 1) return
+
+    let { data: Users } = await supabase
+        .from('Users')
+        .select("*")
+        .eq('id', id)
+        .eq('username', username)
+
+    if(Users != null && Users.length === 0)return
 
 
     let { data: List_Users, error } = await supabase

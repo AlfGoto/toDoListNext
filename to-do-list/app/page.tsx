@@ -52,7 +52,7 @@ export default function Home() {
     async function CreateList(e: any) {
         e.preventDefault()
         if (newListName == '') return
-        let newList: ListInterface = await createListWithName(newListName, Number(idUser))
+        let newList: ListInterface = await createListWithName(newListName, Number(user?.tag.split('#')[1]))
         setLists([...lists, newList])
         setNewListName('')
     }
