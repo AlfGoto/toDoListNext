@@ -129,7 +129,13 @@ body:has(#LoginDIV){
 #interface{
     width: 100svw;
     display: flex;
-    margin-bottom: 10px;
+    gap: 20px;
+    margin: 10px 0px;
+    align-items: center;
+
+    svg{
+        margin-left: 10px;
+    }
 
     select{
         background-color: transparent;
