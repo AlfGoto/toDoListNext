@@ -129,6 +129,7 @@ body:has(#LoginDIV){
 #interface{
     width: 100svw;
     display: flex;
+    margin-bottom: 10px;
 
     select{
         background-color: transparent;
