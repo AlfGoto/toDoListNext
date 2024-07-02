@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from "react"
 import status from "../vars/status"
 
 interface CardsArg {
@@ -38,13 +39,60 @@ interface statusArg {
     name: string,
     array: Array<string>
 }
+interface Rect {
+    x: number,
+    y: number,
+    left: number,
+    top: number,
+    bottom: number,
+    right: number,
+}
 function Status(props: statusArg) {
+    const [selectedDom, setSelectedDom] = useState<undefined | HTMLElement>(undefined)
+    const [bounding, setBounding] = useState<undefined | Rect>(undefined)
+    document.onmousemove = function (e) {
+        var event = e || window.event;
+        if (selectedDom && bounding) {
+            let mouseX = event.clientX;
+            let mouseY = event.clientY;
+            // console.log(selectedDom)
+            selectedDom.style.top = (mouseY - bounding.y) + 'px'
+            selectedDom.style.left = (mouseX - bounding.x) + 'px'
+        }
+    }
+    function mouseDown(arg: string) {
+        let dom = document.getElementById(arg)
+        if (dom === undefined || dom === null) return
+        dom!.style.position = 'absolute'
+        dom!.classList.add('selected')
+        if (!dom.parentElement) return
+
+        setBounding(dom.getBoundingClientRect())
+        setSelectedDom(dom)
+    }
+    document.onmouseup = () => {
+        if (selectedDom) {
+            selectedDom!.style.top = ''
+            selectedDom!.style.left = ''
+            selectedDom!.style.position = 'static'
+            selectedDom!.classList.remove('selected')
+            setBounding(undefined)
+            setSelectedDom(undefined)
+        }
+    }
+
+
     return (<>
         <div className='status'>
             <h2>{props.name}</h2>
-            {/* <div className='rows'> */}
-                {props.array.map((e, key) => <div className='row'><p key={key}>{e}</p></div>)}
-            {/* </div> */}
+            {props.array.map((e, key) =>
+                <div
+                    className='row'
+                    key={key}
+                    id={props.name + '-' + key}
+                    onMouseDown={() => mouseDown(props.name + '-' + key)}
+                ><p>{e}</p>
+                </div>)}
         </div>
     </>
     )

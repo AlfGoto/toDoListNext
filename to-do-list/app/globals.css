@@ -97,7 +97,9 @@ body:has(#LoginDIV){
 }
 
 
-
+body:has(#Cards){
+    overflow: hidden;
+}
 #Cards{
     display: flex;
     align-items: center;
@@ -115,11 +117,17 @@ body:has(#LoginDIV){
         height: 90%;
         flex: 1;
         gap: 20px;
+        position: relative;
 
         .row:has(p){
             border: 1px solid gray;
             width: 100%;
             padding: 10px;
+            user-select: none;
+
+            &.selected{
+                width: 95%;
+            }
         }
     }
 }

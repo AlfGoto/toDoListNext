@@ -93,19 +93,19 @@ export async function removeUserToList(tag: string, idList: number) {
         .eq('id_list', idList)
 
     // console.log(List_Users)
-    if(List_Users === null)return
-    else if(List_Users.length < 1)removeList(idList)
+    if (List_Users === null) return
+    else if (List_Users.length < 1) removeList(idList)
 
     return error ? false : true
 
 }
-async function removeList(id: Number){
+async function removeList(id: Number) {
     await supabase
         .from('Rows')
         .delete()
         .eq('id_list', id)
 
-        await supabase
+    await supabase
         .from('List')
         .delete()
         .eq('id', id)
