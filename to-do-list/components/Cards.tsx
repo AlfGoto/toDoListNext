@@ -42,9 +42,9 @@ function Status(props: statusArg) {
     return (<>
         <div className='status'>
             <h2>{props.name}</h2>
-            <div className='row'>
-                {props.array.map((e, key) => <p key={key}>{e}</p>)}
-            </div>
+            {/* <div className='rows'> */}
+                {props.array.map((e, key) => <div className='row'><p key={key}>{e}</p></div>)}
+            {/* </div> */}
         </div>
     </>
     )
