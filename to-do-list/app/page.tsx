@@ -47,12 +47,13 @@ export default function Home() {
         let u = await getUserWithId(id)
         if (u) setUser(u)
     }
+    // console.log('user', user)
 
 
     async function CreateList(e: any) {
         e.preventDefault()
         if (newListName == '') return
-        let newList: ListInterface = await createListWithName(newListName, Number(user?.tag.split('#')[1]))
+        let newList: ListInterface = await createListWithName(newListName, user?.tag ? user?.tag : 'no')
         setLists([...lists, newList])
         setNewListName('')
     }
@@ -93,20 +94,18 @@ export default function Home() {
         router.push('/log')
     }
     function addUser() {
-        if(user && selectedList){
+        if (user && selectedList) {
             addUserToList(newUser, selectedList.id)
             setNewUser('')
         }
     }
-    async function removeUser(){
-        if(user && selectedList){
+    async function removeUser() {
+        if (user && selectedList) {
             let s = await removeUserToList(user.tag, selectedList.id)
-            if(s){
+            if (s) {
                 setSelectedList(undefined)
                 window.location.reload()
             }
-            // getList(Number(idUser))
-            // window.location.reload();
         }
     }
 
@@ -122,10 +121,10 @@ export default function Home() {
 
                 <h3>{selectedList.name}</h3>
 
-                <input type="text" value={newUser} onChange={(e: any) => { setNewUser(e.target.value) }} />
-                <button onClick={addUser}>Add</button>  
+                <input type="text" value={newUser} onChange={(e: any) => { setNewUser(e.target.value) }} placeholder="newUser#0000" />
+                <button onClick={addUser}>Add</button>
 
-                {user && <p onClick={() => { navigator.clipboard.writeText(user?.username + user?.tag) }}>{user?.username + user?.tag}</p>}
+                {user && <p onClick={() => { navigator.clipboard.writeText( user?.tag) }}>{ user?.tag}</p>}
                 <button onClick={removeUser}>Leave List</button>
                 <button onClick={disconnect}>Disconnect</button>
             </section>

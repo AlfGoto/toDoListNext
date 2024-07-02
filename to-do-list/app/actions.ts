@@ -27,22 +27,24 @@ export async function getListOfListsWithIdUser(id: number) {
     let { data: List } = await supabase.from('List').select("*").in('id', ids)
     return List
 }
-export async function createListWithName(name: string, idUser: number) {
+export async function createListWithName(name: string, tag: string) {
     let { data, error } = await supabase.from('List').insert([{ name: name },]).select()
     if (data != null) {
-        let dat = await supabase.from('List_Users').insert([{ id_list: data[0].id, id_user: idUser },]).select()
+        console.log(tag)
+        addUserToList(tag, data[0].id)
         return data[0]
     }
 }
 export async function getUserWithId(id: number) {
-
+    // console.log(id)
     let { data: Users, error } = await supabase.from('Users').select("*").eq('id', id)
     if (Users == null) { return false } else {
+        // console.log(Users[0])
         let tag = Users[0].id.toString()
         while (tag.length < 4) {
             tag = '0' + tag
         }
-        tag = '#' + tag
+        tag = Users[0].username + '#' + tag
         return { username: Users[0].username, tag: tag }
     }
 }
@@ -50,6 +52,7 @@ export async function addUserToList(tag: string, idList: number) {
     let id: number = Number(tag.split('#')[1])
     let username: string = tag.split('#')[0]
     if (id < 1) return
+    // console.log(id, tag)
 
     let { data: Users } = await supabase
         .from('Users')
@@ -57,8 +60,7 @@ export async function addUserToList(tag: string, idList: number) {
         .eq('id', id)
         .eq('username', username)
 
-    if(Users != null && Users.length === 0)return
-
+    if (Users != null && Users.length === 0) return
 
     let { data: List_Users, error } = await supabase
         .from('List_Users')
@@ -83,6 +85,14 @@ export async function removeUserToList(tag: string, idList: number) {
         .delete()
         .eq('id_list', idList)
         .eq('id_user', id)
+
+
+    let { data: List_Users } = await supabase
+        .from('List_Users')
+        .select("*")
+        .eq('id_list', idList)
+
+    console.log(List_Users)
 
     return error ? false : true
 
