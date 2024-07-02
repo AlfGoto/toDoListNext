@@ -50,12 +50,12 @@ interface Rect {
 function Status(props: statusArg) {
     const [selectedDom, setSelectedDom] = useState<undefined | HTMLElement>(undefined)
     const [bounding, setBounding] = useState<undefined | Rect>(undefined)
+    let mouseX = 0
+    let mouseY = 0
     document.onmousemove = function (e) {
-        var event = e || window.event;
+        mouseX = e.clientX
+        mouseY = e.clientY
         if (selectedDom && bounding) {
-            let mouseX = event.clientX;
-            let mouseY = event.clientY;
-            // console.log(selectedDom)
             selectedDom.style.top = (mouseY - bounding.y) + 'px'
             selectedDom.style.left = (mouseX - bounding.x) + 'px'
         }
@@ -78,6 +78,12 @@ function Status(props: statusArg) {
             selectedDom!.classList.remove('selected')
             setBounding(undefined)
             setSelectedDom(undefined)
+
+            let tier = mouseX / (window.innerWidth / 3)
+            if (tier < 1) console.log('Todo')
+            else if (tier < 2) console.log('InProgress')
+            else console.log('Done')
+
         }
     }
 
